@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nossa História</title>
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+	<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+    <style>
+        /* Estilo Geral */
+        body {
+			/* Um degradê suave entre tons de rosa pastel e off-white */
+			background: linear-gradient(135deg, #fff5f5 0%, #f0f4f8 100%);
+			background-size: 400% 400%;
+			animation: gradientBG 15s ease infinite;
+			color: #4a4a4a;
+        }
+		
+		@keyframes gradientBG {
+			0% { background-position: 0% 50%; }
+			50% { background-position: 100% 50%; }
+			100% { background-position: 0% 50%; }
+		}
+
+        .header {
+            text-align: center;
+            padding: 50px 20px;
+            background: white;
+        }
+
+        h1 { 
+			font-family: 'Dancing Script', cursive; /* Fonte manuscrita para o título */
+			font-size: 42px; 
+			color: #ff4757; 
+		}
+		h3 { 
+			font-family: 'Playfair Display', serif; /* Fonte elegante para os títulos dos momentos */
+			font-style: italic;
+			color: #ff4757;
+		}
+
+		p, .data {
+			font-family: 'Segoe UI', sans-serif; /* Mantemos a legibilidade no texto */
+		}
+
+        /* A Linha do Tempo */
+        .timeline {
+            position: relative;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        /* A linha vertical central */
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 2px;
+            background: #C0C0C0;
+            top: 0;
+            bottom: 0;
+            left: 20px; /* Alinhado à esquerda no celular */
+        }
+
+        /* Cada Item da História */
+        .momento-item {
+            padding: 10px 40px;
+            position: relative;
+            background-color: inherit;
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 30px;
+            opacity: 0; /* Começa invisível para a animação */
+            transform: scale(0.95) translateY(30px);
+            transition: all 1s cubic-bezier(0.2, 1, 0.3, 1);
+        }
+
+        /* O círculo na linha */
+        .momento-item::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            left: 12px;
+            background-color: white;
+            border: 3px solid #ff4757;
+            top: 15px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .conteudo {
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .conteudo {
+			background: rgba(255, 255, 255, 0.8); /* Branco translúcido para ver o fundo */
+			backdrop-filter: blur(5px); /* Efeito de vidro fosco */
+			border: 1px solid rgba(255, 255, 255, 0.3);
+		}
+
+        .data {
+            font-weight: bold;
+            color: #ff4757;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        /* Classe para ativar a animação */
+        .visivel {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+        .footer-back {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .btn-voltar {
+            text-decoration: none;
+            color: #888;
+            font-size: 14px;
+        }
+		.coracao-flutuante {
+			position: absolute;
+			color: #ff4757;
+			font-size: 20px;
+			pointer-events: none;
+			z-index: 10;
+			animation: flutuarESumir 2s ease-out forwards;
+		}
+
+		@keyframes flutuarESumir {
+			0% { transform: translateY(0) scale(1); opacity: 1; }
+			100% { transform: translateY(-50px) scale(1.5); opacity: 0; }
+		}
+    </style>
+</head>
+<body>
+	<audio id="coracaoSom" loop>
+    <source src="sons/batida-coracao.mp3" type="audio/mpeg">
+	</audio>
+    <div class="header">
+        <i class='bx bxs-heart' style="color: #ff4757; font-size: 40px;"></i>
+        <h1>Nossa História de Amor</h1>
+        <p>Cada detalhe, cada sorriso, cada passo juntos.</p>
+    </div>
+
+    <div class="timeline">
+        <div class="momento-item">
+            <div class="conteudo">
+                <span class="data">12 de Outubro</span>
+                <h3>O Primeiro Oi</h3>
+                <p>Aqui você conta como foi aquele momento especial em que as conversas começaram...</p>
+            </div>
+        </div>
+
+        <div class="momento-item">
+            <div class="conteudo">
+                <img src="img/foto-primeiro-encontro.jpg" alt="Nosso encontro">
+                <span class="data">20 de Novembro</span>
+                <h3>O Encontro Marcante</h3>
+                <p>Aquele dia em que o frio na barriga tomou conta e percebemos que era real.</p>
+            </div>
+        </div>
+		
+		<div class="momento-item">
+            <div class="conteudo">
+                <img src="img/foto-primeiro-encontro.jpg" alt="Nosso encontro">
+                <span class="data">16 de Fevereiro</span>
+                <h3>O Pedido de namoro</h3>
+                <p>Aquele dia em que o frio na barriga tomou conta e percebemos que era real.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="footer-back">
+        <a href="index.html" class="btn-voltar"><i class='bx bx-left-arrow-alt'></i> Voltar ao início</a>
+    </div>
+
+    <script>
+        const audio = document.getElementById('coracaoSom');
+		let iniciouAudio = false;
+
+		const observer = new IntersectionObserver((entries) => {
+			entries.forEach(entry => {
+				if (entry.isIntersecting) {
+					entry.target.classList.add('visivel');
+					
+					// Lógica do Coração Flutuante
+					if (!entry.target.dataset.animado) {
+						const coracao = document.createElement('i');
+						coracao.className = 'bx bxs-heart coracao-flutuante';
+						// Posiciona o coração perto do círculo da linha do tempo
+						coracao.style.left = '12px';
+						coracao.style.top = '15px';
+						entry.target.appendChild(coracao);
+						entry.target.dataset.animado = "true"; // Garante que anime só uma vez
+					}
+
+					// ... (mantenha o código do áudio que já fizemos)
+					if(!iniciouAudio) {
+						audio.play();
+						audio.volume = 0.2;
+						iniciouAudio = true;
+					}
+					const itens = Array.from(document.querySelectorAll('.momento-item'));
+					const index = itens.indexOf(entry.target);
+					let novoVolume = 0.2 + (index * 0.15);
+					audio.volume = Math.min(novoVolume, 1.0);
+				}
+			});
+		}, { threshold: 0.5 });
+
+		// Não esqueça da linha que liga o observador:
+		document.querySelectorAll('.momento-item').forEach(item => observer.observe(item));
+    </script>
+</body>
+</html>
