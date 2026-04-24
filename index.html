@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
-    <title>Minha história de namoro</title>
+    <title>Nossa História - Ariany & Você</title>
     <style>
         body {
             background-color: #faf5f6;
@@ -49,6 +49,7 @@
             background-image: url('img/textura-madeira-quente.jpeg');
             background-size: cover;
             margin: 50px 0;
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.5);
         }
 
         .scroll-sticky {
@@ -75,25 +76,6 @@
             align-items: center;
             min-width: 100vw; 
             position: relative;
-            overflow: hidden; /* Para o efeito de brilho */
-        }
-
-        /* EFEITO DE BRILHO SUTIL NAS FOTOS */
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -150%;
-            width: 50%;
-            height: 100%;
-            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 100%);
-            transform: skewX(-25deg);
-            transition: 0.8s;
-            z-index: 10;
-        }
-
-        .card:hover::before {
-            left: 150%;
         }
 
         .card img {
@@ -126,19 +108,61 @@
             to { transform: translateX(-700vw); } 
         }
 
-        /* AJUSTE DO PULL TO REFRESH */
+        /* SEÇÃO DA CARTA DEDICADA */
+        .carta-container {
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 2px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            position: relative;
+            text-align: center;
+        }
+
+        .carta-container i { color: #ff4757; font-size: 30px; opacity: 0.2; }
+
+        .texto-dedicado {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            line-height: 1.8;
+            color: #555;
+            font-size: 1.1rem;
+            margin: 15px 0;
+        }
+
+        .frase-sussurro {
+            font-family: 'Dancing Script', cursive;
+            color: #ff4757;
+            font-size: 1.3rem;
+            height: 30px;
+            transition: opacity 1s;
+        }
+
+        /* RASPADINHA */
+        .raspadinha-container { text-align: center; margin: 40px auto; }
+        .raspadinha-caixa {
+            position: relative; width: 280px; height: 150px; margin: 0 auto;
+            border-radius: 10px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            background: #fff; display: flex; align-items: center; justify-content: center;
+        }
+        .mensagem-escondida { font-family: 'Dancing Script', cursive; font-size: 1.4rem; color: #ff4757; }
+        #raspadinha-canvas { position: absolute; top: 0; left: 0; cursor: crosshair; touch-action: none; }
+
+        /* PULL TO REFRESH / TRAVA */
         .trava-container { width: 100%; max-width: 300px; margin: 40px auto; }
         .trava-pista {
             width: 100%; height: 60px; background: #e0e0e0; border-radius: 30px;
-            position: relative; display: flex; align-items: center; justify-content: center;
-            overflow: hidden;
+            position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden;
         }
         .trava-botao {
             width: 50px; height: 50px; background: #ff4757; border-radius: 50%;
             position: absolute; left: 5px; display: flex; align-items: center; justify-content: center;
-            color: white; font-size: 24px;
-            animation: pulse-sutil 2s infinite; /* Pulsação sutil para atrair o dedo */
+            color: white; font-size: 24px; animation: pulse-sutil 2s infinite;
         }
+        .liberado { background: #4cd137 !important; }
+
+        .contador-discreto { font-size: 0.85rem; color: #999; margin-top: 20px; }
 
         @keyframes pulse-sutil {
             0% { box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.4); }
@@ -146,106 +170,79 @@
             100% { box-shadow: 0 0 0 0 rgba(255, 71, 87, 0); }
         }
 
-        .liberado { background: #4cd137 !important; }
-
-        /* ESTILO DOS CONFETES DE CORAÇÃO */
-        .coracao-confete {
-            position: fixed;
-            z-index: 9999;
-            pointer-events: none;
-            font-size: 20px;
-            animation: subirESumir 2.5s ease-out forwards;
-        }
-
-        @keyframes subirESumir {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
-        }
-		
-		
-		
-		.contador-caixa {
-			text-align: center;
-			padding: 20px;
-			background: rgba(255, 255, 255, 0.5);
-			border-radius: 15px;
-			max-width: 320px;
-			box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-			margin: 20px auto;
-			width: 100%;
-			
-			font-size: 0.7rem;
-			color: #888;
-			text-transform: uppercase;
-			letter-spacing: 1px;
-		}
-
-		#contador {
-			font-weight: bold;
-			color: #ff4757;
-			font-size: 1.2rem;
-		}
-
-		.btn-surpresa {
-			background: #ff4757;
-			color: white;
-			border: none;
-			padding: 12px 25px;
-			border-radius: 25px;
+        .coracao-confete { position: fixed; z-index: 9999; pointer-events: none; animation: subirESumir 2.5s ease-out forwards; }
+        @keyframes subirESumir { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(-100vh); opacity: 0; } }
+    
+	
+	
+		.musica-player {
+			position: fixed;
+			top: 20px;
+			right: 20px;
+			z-index: 5000;
+			width: 45px;
+			height: 45px;
+			background: white;
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 			cursor: pointer;
-			font-family: 'Segoe UI', sans-serif;
-			margin-top: 15px;
 			transition: 0.3s;
 		}
 
-		.btn-surpresa:active { transform: scale(0.9); }
-
-		#frase-surpresa {
-			margin-top: 10px;
-			font-style: italic;
-			color: #b0413e;
-			min-height: 20px;
-		}
-		
-		
-		
-		
-		.saudade-container {
-			text-align: center;
-			margin: 20px auto;
-			padding: 15px;
-			background: rgba(255, 255, 255, 0.5);
-			border-radius: 15px;
-			max-width: 320px;
-			box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-		}
-
-		.saudade-label {
-			font-size: 0.8rem;
-			color: #888;
-			text-transform: uppercase;
-			letter-spacing: 1px;
-		}
-
-		#contador-saudade {
-			font-family: 'Segoe UI', sans-serif;
-			font-size: 1.4rem;
-			font-weight: bold;
+		#icone-play {
+			font-size: 20px;
 			color: #ff4757;
-			margin: 10px 0;
+			position: absolute;
+			transition: 0.3s;
 		}
 
-		.saudade-frase {
-			font-family: 'Dancing Script', cursive;
-			font-size: 1.2rem;
-			color: #b0413e;
-			min-height: 1.5rem;
+		/* Barrinhas de som que pulsam */
+		.barras-som {
+			display: none; /* Escondido quando pausado */
+			align-items: flex-end;
+			gap: 2px;
+			height: 15px;
 		}
-		
-    </style>
+
+		.barras-som span {
+			width: 3px;
+			background: #ff4757;
+			border-radius: 2px;
+			animation: pulsarSom 0.5s ease-in-out infinite alternate;
+		}
+
+		.barras-som span:nth-child(2) { animation-delay: 0.1s; height: 100%; }
+		.barras-som span:nth-child(3) { animation-delay: 0.2s; height: 70%; }
+		.barras-som span:nth-child(4) { animation-delay: 0.3s; height: 40%; }
+
+		@keyframes pulsarSom {
+			from { height: 20%; }
+			to { height: 100%; }
+		}
+
+		/* Quando estiver tocando, esconde o ícone e mostra as barras */
+		.musica-player.tocando #icone-play { opacity: 0; }
+		.musica-player.tocando .barras-som { display: flex; }
+	</style>
 </head>
 
 <body>
+
+	<div class="musica-player" id="player-btn" onclick="toggleMusica()">
+		<div class="barras-som" id="ondas">
+			<span></span><span></span><span></span><span></span>
+		</div>
+		<i class='bx bx-music' id="icone-play"></i>
+		<audio id="musica-tema" loop>
+			<source src="sons/nossa-musica.mp3" type="audio/mpeg">
+		</audio>
+	</div>
+	
+	
+	
     <div class="container">
         <div class="foto-destaque">
             <img src="./img/namorada/perfil.jpeg" alt="Perfil" />
@@ -257,46 +254,53 @@
     <div class="scroll-wrapper">
         <div class="scroll-sticky">
             <div class="scroll-content">
-                <div class="card"><img src="./img/namorada/n1.jpg" alt="1"><div class="legenda">O início de tudo...</div></div>
-                <div class="card"><img src="./img/namorada/n2.jpg" alt="2"><div class="legenda">Estava apaixonado...</div></div>
-                <div class="card"><img src="./img/namorada/n3.jpg" alt="3"><div class="legenda">Nossa 1ª viagem juntos</div></div>
-                <div class="card"><img src="./img/namorada/n4.jpeg" alt="4"><div class="legenda">Eu te amo muito</div></div>
-                <div class="card"><img src="./img/namorada/n5.jpeg" alt="5"><div class="legenda">Estávamos felizes</div></div>
-                <div class="card"><img src="./img/namorada/n6.jpeg" alt="6"><div class="legenda">Minha 1ª vez no The Best</div></div>
-                <div class="card"><img src="./img/namorada/n7.jpeg" alt="7"><div class="legenda">Escolhi te amar</div></div>
-                <div class="card"><img src="./img/namorada/n8.jpeg" alt="8"><div class="legenda">Nosso sorriso</div></div>
+                <div class="card"><img src="./img/namorada/n1.jpg"><div class="legenda">O início de tudo...</div></div>
+                <div class="card"><img src="./img/namorada/n2.jpg"><div class="legenda">Estava apaixonado...</div></div>
+                <div class="card"><img src="./img/namorada/n3.jpg"><div class="legenda">Nossa 1ª viagem juntos</div></div>
+                <div class="card"><img src="./img/namorada/n4.jpeg"><div class="legenda">Eu te amo muito</div></div>
+                <div class="card"><img src="./img/namorada/n5.jpeg"><div class="legenda">Estávamos felizes</div></div>
+                <div class="card"><img src="./img/namorada/n6.jpeg"><div class="legenda">Minha 1ª vez no The Best</div></div>
+                <div class="card"><img src="./img/namorada/n7.jpeg"><div class="legenda">Escolhi te amar</div></div>
+                <div class="card"><img src="./img/namorada/n8.jpeg"><div class="legenda">Nosso sorriso</div></div>
             </div>
         </div>
     </div>
-	
-	<div class="container">
+
+    <div class="container">
+        <div class="carta-container">
+            <i class='bx bxs-quote-left'></i>
+            <p class="texto-dedicado">
+                Ariany, decidi criar este espaço para que você sempre saiba o quanto é especial. 
+                Cada foto acima representa um passo que demos juntos, e cada passo me deu a certeza de que 
+                você é a pessoa certa. Obrigado por ser minha parceira.
+            </p>
+            <div id="frase-sussurro" class="frase-sussurro">O seu sorriso contagiante.</div>
+        </div>
+
+        <div class="raspadinha-container">
+            <p style="color: #888; font-size: 0.9rem;">UMA PEQUENA SURPRESA:</p>
+            <div class="raspadinha-caixa">
+                <div class="mensagem-escondida">Vale um jantar especial! ❤️</div>
+                <canvas id="raspadinha-canvas" width="280" height="150"></canvas>
+            </div>
+        </div>
+
         <p>Começamos juntos, vamos juntos até o fim.</p>
+        
         <div class="trava-container">
             <div class="trava-pista">
                 <div id="slider" class="trava-botao"><i class='bx bx-right-arrow-alt'></i></div>
-                <span class="trava-texto">Arraste para abrir</span>
+                <span class="trava-texto">Arraste para abrir nossa história</span>
             </div>
         </div>
+
+        <div class="contador-discreto">
+            Escrevendo nossa história há <span id="contador-dias">...</span> dias.
+        </div>
     </div>
-	
-	<div class="container">
-		<p id="frase-surpresa"></p>
-		<button class="btn-surpresa" onclick="mostrarFrase()">
-			<i class='bx bxs-magic-wand'></i> O que eu amo em você?
-		</button>
-		<div class="contador-caixa">
-			<h3>Estamos juntos há:</h3>
-			<div id="contador">Carregando tempo...</div>
-		</div>
-	</div>
-	
-    <div class="saudade-container">
-		<span class="saudade-label">Nível de saudade acumulado:</span>
-		<div id="contador-saudade">Carregando...</div>
-		<p class="saudade-frase" id="frase-dinamica">Pensando em você...</p>
-	</div>
 
     <script>
+        // 1. Lógica do Slider e Corações
         const slider = document.getElementById('slider');
         const pista = document.querySelector('.trava-pista');
         let isDragging = false;
@@ -317,115 +321,83 @@
 
             if (x >= limit && !slider.classList.contains('liberado')) {
                 slider.classList.add('liberado');
-                
-                // DISPARA A CHUVA DE CORAÇÕES AO DESBLOQUEAR
-                for(let i=0; i<20; i++) {
-                    setTimeout(criarCoracao, i * 50);
-                }
-
-                setTimeout(() => { 
-                    window.location.href = "historia.html"; 
-                }, 1200); 
+                for(let i=0; i<20; i++) { setTimeout(criarCoracao, i * 50); }
+                setTimeout(() => { window.location.href = "historia.html"; }, 1200);
             }
         };
 
-        const end = () => {
-            if (!slider.classList.contains('liberado')) slider.style.left = '5px';
-            isDragging = false;
-        };
+        const end = () => { if (!slider.classList.contains('liberado')) slider.style.left = '5px'; isDragging = false; };
 
-        // FUNÇÃO PARA CRIAR O ELEMENTO DE CORAÇÃO
         function criarCoracao() {
-            const coracao = document.createElement('div');
-            coracao.innerHTML = '❤️';
-            coracao.className = 'coracao-confete';
-            coracao.style.left = Math.random() * 100 + 'vw';
-            coracao.style.bottom = '-5vh';
-            coracao.style.fontSize = (Math.random() * 20 + 10) + 'px';
-            document.body.appendChild(coracao);
-            
-            // Remove do HTML após a animação acabar
-            setTimeout(() => { coracao.remove(); }, 3000);
+            const c = document.createElement('div'); c.innerHTML = '❤️'; c.className = 'coracao-confete';
+            c.style.left = Math.random() * 100 + 'vw'; c.style.bottom = '-5vh';
+            c.style.fontSize = (Math.random() * 20 + 10) + 'px'; document.body.appendChild(c);
+            setTimeout(() => { c.remove(); }, 3000);
         }
 
-        slider.addEventListener('mousedown', start);
-        slider.addEventListener('touchstart', start);
-        window.addEventListener('mousemove', move);
-        window.addEventListener('touchmove', move);
-        window.addEventListener('mouseup', end);
-        window.addEventListener('touchend', end);
+        slider.addEventListener('mousedown', start); slider.addEventListener('touchstart', start);
+        window.addEventListener('mousemove', move); window.addEventListener('touchmove', move);
+        window.addEventListener('mouseup', end); window.addEventListener('touchend', end);
+
+        // 2. Lógica do Contador Minimalista
+        const dataInicio = new Date("2026-02-16T00:00:00");
+        function atualizarDias() {
+            const diff = new Date() - dataInicio;
+            document.getElementById('contador-dias').innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
+        }
+        atualizarDias();
+
+        // 3. Lógica dos Sussurros (Frases Automáticas)
+        const frases = ["O seu sorriso contagiante.", "A sua inteligência.", "Sua determinação incrível.", "A paz que você me traz.", "O seu carinho único."];
+        let fIndex = 0;
+        setInterval(() => {
+            const p = document.getElementById('frase-sussurro');
+            p.style.opacity = 0;
+            setTimeout(() => {
+                fIndex = (fIndex + 1) % frases.length;
+                p.innerText = frases[fIndex];
+                p.style.opacity = 1;
+            }, 1000);
+        }, 4000);
+
+        // 4. Lógica da Raspadinha
+        const canvas = document.getElementById('raspadinha-canvas');
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#C0C0C0'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#888'; ctx.font = 'bold 16px Arial'; ctx.textAlign = 'center';
+        ctx.fillText('PASSE O DEDO AQUI', canvas.width / 2, canvas.height / 2 + 5);
+
+        function raspar(e) {
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.pageX || e.touches[0].pageX) - rect.left - window.scrollX;
+            const y = (e.pageY || e.touches[0].pageY) - rect.top - window.scrollY;
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.beginPath(); ctx.arc(x, y, 20, 0, Math.PI * 2); ctx.fill();
+        }
+        canvas.addEventListener('mousemove', (e) => { if(e.buttons === 1) raspar(e); });
+        canvas.addEventListener('touchmove', (e) => { e.preventDefault(); raspar(e); });
 		
 		
-		// 1. Lógica do Contador
-		const dataInicio = new Date("2026-02-16T00:00:00"); // COLOQUE A DATA CERTA AQUI
+		const musica = document.getElementById('musica-tema');
+		const playerBtn = document.getElementById('player-btn');
 
-		function atualizarContador() {
-			const agora = new Date();
-			const diff = agora - dataInicio;
-
-			const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
-			const horas = Math.floor((diff / (1000 * 60 * 60)) % 24);
-			const minutos = Math.floor((diff / 1000 / 60) % 60);
-			const segundos = Math.floor((diff / 1000) % 60);
-
-			document.getElementById('contador').innerHTML = 
-				`${dias} dias, ${horas}h ${minutos}m ${segundos}s`;
-		}
-		setInterval(atualizarContador, 1000);
-
-		// 2. Lógica das Frases Aleatórias
-		const frases = [
-			"O brilho do seu olhar.",
-			"A forma como você me apoia.",
-			"O seu sorriso contagiante.",
-			"Sua determinação em tudo o que faz.",
-			"A paz que você me transmite.",
-			"O seu carinho único."
-		];
-
-		function mostrarFrase() {
-			const p = document.getElementById('frase-surpresa');
-			const fraseAleatoria = frases[Math.floor(Math.random() * frases.length)];
-			p.style.opacity = 0;
-			setTimeout(() => {
-				p.innerText = fraseAleatoria;
-				p.style.opacity = 1;
-			}, 200);
-		}
-		
-		
-		
-		// Defina aqui a data que você quer contar (Ex: Início do namoro ou última vez que se viram)
-		const dataReferencia = new Date("2026-04-01T00:14:00"); 
-
-		function atualizarSaudade() {
-			const agora = new Date();
-			const diff = agora - dataReferencia;
-
-			const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
-			const horas = Math.floor((diff / (1000 * 60 * 60)) % 24);
-			const minutos = Math.floor((diff / 1000 / 60) % 60);
-			const segundos = Math.floor((diff / 1000) % 60);
-
-			document.getElementById('contador-saudade').innerHTML = 
-				`${dias}d ${horas}h ${minutos}m ${segundos}s`;
-			
-			// Mudar a frase dependendo dos segundos (só para dar um charme)
-			const frases = [
-				"O coração bate mais forte...",
-				"Contando os segundos para te ver",
-				"Você é meu pensamento favorito",
-				"Cada segundo vale a pena com você",
-				"Saudade que não cabe no peito"
-			];
-			
-			// Muda a frase a cada 5 segundos
-			const indexFrase = Math.floor(segundos / 12); 
-			document.getElementById('frase-dinamica').innerText = frases[indexFrase];
+		function toggleMusica() {
+			if (musica.paused) {
+				musica.play();
+				musica.volume = 0.4; // Volume em 40% para ser agradável
+				playerBtn.classList.add('tocando');
+			} else {
+				musica.pause();
+				playerBtn.classList.remove('tocando');
+			}
 		}
 
-		setInterval(atualizarSaudade, 1000);
-		atualizarSaudade(); // Chama uma vez logo de cara
+		// Iniciar música na primeira interação da usuária para evitar bloqueio do navegador
+		document.body.addEventListener('click', () => {
+			if (musica.paused && !playerBtn.classList.contains('pausado-manual')) {
+				toggleMusica();
+			}
+		}, { once: true }); // Executa apenas uma vez
     </script>
 </body>
 </html>

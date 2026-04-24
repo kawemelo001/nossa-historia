@@ -208,45 +208,73 @@
 		}
 		
 		
-		
-		/* Efeito de Brilho nas Fotos */
-		.card img, .foto-destaque img {
-			position: relative;
-			overflow: hidden;
+		.musica-player {
+			position: fixed;
+			top: 20px;
+			right: 20px;
+			z-index: 5000;
+			width: 45px;
+			height: 45px;
+			background: white;
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+			cursor: pointer;
+			transition: 0.3s;
 		}
 
-		.card::before {
-			content: '';
+		#icone-play {
+			font-size: 20px;
+			color: #ff4757;
 			position: absolute;
-			top: 0;
-			left: -75%;
-			width: 50%;
-			height: 100%;
-			background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 100%);
-			transform: skewX(-25deg);
-			transition: 0.7s;
-			z-index: 1;
+			transition: 0.3s;
 		}
 
-		/* Quando o card está focado ou o mouse passa, o brilho atravessa a foto */
-		.card:hover::before, .card.focada::before {
-			left: 125%;
+		/* Barrinhas de som que pulsam */
+		.barras-som {
+			display: none; /* Escondido quando pausado */
+			align-items: flex-end;
+			gap: 2px;
+			height: 15px;
 		}
 
-		/* Pequena animação de "pulo" no botão de desbloqueio para chamar atenção */
-		.trava-botao {
-			animation: bounce 2s infinite;
+		.barras-som span {
+			width: 3px;
+			background: #ff4757;
+			border-radius: 2px;
+			animation: pulsarSom 0.5s ease-in-out infinite alternate;
 		}
 
-		@keyframes bounce {
-			0%, 20%, 50%, 80%, 100% {transform: translateX(0);}
-			40% {transform: translateX(10px);}
-			60% {transform: translateX(5px);}
+		.barras-som span:nth-child(2) { animation-delay: 0.1s; height: 100%; }
+		.barras-som span:nth-child(3) { animation-delay: 0.2s; height: 70%; }
+		.barras-som span:nth-child(4) { animation-delay: 0.3s; height: 40%; }
+
+		@keyframes pulsarSom {
+			from { height: 20%; }
+			to { height: 100%; }
 		}
+
+		/* Quando estiver tocando, esconde o ícone e mostra as barras */
+		.musica-player.tocando #icone-play { opacity: 0; }
+		.musica-player.tocando .barras-som { display: flex; }
+		
 		
     </style>
 </head>
 <body>
+
+	<div class="musica-player" id="player-btn" onclick="toggleMusica()">
+		<div class="barras-som" id="ondas">
+			<span></span><span></span><span></span><span></span>
+		</div>
+		<i class='bx bx-music' id="icone-play"></i>
+		<audio id="musica-tema" loop>
+			<source src="sons/nossa-musica.mp3" type="audio/mpeg">
+		</audio>
+	</div>
+
 	<div class="fab-container">
 		<div class="fab-options" id="fabOptions">
 			<div class="fab-item" onclick="abrirModal('modal-ela')">
@@ -419,6 +447,27 @@
 					event.target.style.display = "none";
 				}
 			});
+			
+			const musica = document.getElementById('musica-tema');
+			const playerBtn = document.getElementById('player-btn');
+
+			function toggleMusica() {
+				if (musica.paused) {
+					musica.play();
+					musica.volume = 0.4; // Volume em 40% para ser agradável
+					playerBtn.classList.add('tocando');
+				} else {
+					musica.pause();
+					playerBtn.classList.remove('tocando');
+				}
+			}
+
+			// Iniciar música na primeira interação da usuária para evitar bloqueio do navegador
+			document.body.addEventListener('click', () => {
+				if (musica.paused && !playerBtn.classList.contains('pausado-manual')) {
+					toggleMusica();
+				}
+			}, { once: true }); // Executa apenas uma vez
     </script>
 </body>
 </html>
