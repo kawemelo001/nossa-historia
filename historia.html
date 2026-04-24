@@ -5,314 +5,193 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Nossa História</title>
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
-	<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
     <style>
         /* Estilo Geral */
         body {
-			/* Um degradê suave entre tons de rosa pastel e off-white */
-			background: linear-gradient(135deg, #fff5f5 0%, #f0f4f8 100%);
-			background-size: 400% 400%;
-			animation: gradientBG 15s ease infinite;
-			color: #4a4a4a;
+            background: linear-gradient(135deg, #fff5f5 0%, #f0f4f8 100%);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #4a4a4a;
+            margin: 0;
+            padding: 0;
         }
-		
-		/* Estilo dos Modais (As caixas de descrição) */
-		.modal {
-			display: none;
-			position: fixed;
-			z-index: 3000;
-			left: 0; top: 0; width: 100%; height: 100%;
-			background-color: rgba(0,0,0,0.7);
-			backdrop-filter: blur(8px); /* Efeito de vidro atrás */
-		}
 
-		.modal-content {
-			background-color: #fff;
-			margin: 15% auto;
-			padding: 30px;
-			border-radius: 20px;
-			width: 85%;
-			max-width: 400px;
-			text-align: center;
-			position: relative;
-			box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-			animation: zoomIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-		}
+        /* Modais */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 3000;
+            left: 0; top: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            backdrop-filter: blur(8px);
+        }
 
-		.img-bio-grande {
-			width: 120px;
-			height: 120px;
-			border-radius: 50%;
-			object-fit: cover;
-			margin-bottom: 15px;
-			border: 4px solid #ff4757;
-		}
-
-		.bio-info {
-			color: #ff4757;
-			font-weight: bold;
-			margin-bottom: 10px;
-		}
-
-		.bio-texto {
-			font-size: 0.95rem;
-			line-height: 1.6;
-			color: #555;
-		}
-
-		.close {
-			position: absolute;
-			right: 20px;
-			top: 15px;
-			font-size: 28px;
-			font-weight: bold;
-			color: #aaa;
-			cursor: pointer;
-		}
-
-		/* Reutilizando o Estilo do FAB do passo anterior */
-		.fab-container { position: fixed; bottom: 20px; right: 20px; z-index: 2000; display: flex; flex-direction: column-reverse; align-items: center; }
-		.fab-main { width: 60px; height: 60px; background-color: #ff4757; border-radius: 50%; border: none; color: white; font-size: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
-		.fab-main.active { transform: rotate(45deg); }
-		.fab-options { display: none; flex-direction: column; gap: 15px; margin-bottom: 15px; animation: fadeInSlide 0.3s ease forwards; }
-		.fab-options.show { display: flex; }
-		.fab-item { display: flex; align-items: center; gap: 10px; cursor: pointer; }
-		.fab-perfil { width: 50px; height: 50px; border-radius: 50%; border: 3px solid white; box-shadow: 0 4px 8px rgba(0,0,0,0.2); object-fit: cover; }
-		.fab-label { background: white; padding: 5px 10px; border-radius: 8px; font-size: 12px; font-weight: bold; color: #333; }
-
-		@keyframes zoomIn { from { transform: scale(0.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-		@keyframes fadeInSlide { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-		
-		@keyframes gradientBG {
-			0% { background-position: 0% 50%; }
-			50% { background-position: 100% 50%; }
-			100% { background-position: 0% 50%; }
-		}
-
-        .header {
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 30px;
+            border-radius: 20px;
+            width: 85%;
+            max-width: 400px;
             text-align: center;
-            padding: 50px 20px;
-            background: white;
-        }
-
-        h1 { 
-			font-family: 'Dancing Script', cursive; /* Fonte manuscrita para o título */
-			font-size: 42px; 
-			color: #ff4757; 
-		}
-		h3 { 
-			font-family: 'Playfair Display', serif; /* Fonte elegante para os títulos dos momentos */
-			font-style: italic;
-			color: #ff4757;
-		}
-
-		p, .data {
-			font-family: 'Segoe UI', sans-serif; /* Mantemos a legibilidade no texto */
-		}
-
-        /* A Linha do Tempo */
-        .timeline {
             position: relative;
-            max-width: 600px;
-            margin: 20px auto;
-            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            animation: zoomIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* A linha vertical central */
-        .timeline::after {
-            content: '';
-            position: absolute;
-            width: 2px;
-            background: #C0C0C0;
-            top: 0;
-            bottom: 0;
-            left: 20px; /* Alinhado à esquerda no celular */
+        .img-bio-grande {
+            width: 120px; height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 4px solid #ff4757;
         }
 
-        /* Cada Item da História */
+        .bio-info { color: #ff4757; font-weight: bold; margin-bottom: 10px; }
+        .bio-texto { font-size: 0.95rem; line-height: 1.6; color: #555; }
+        .close { position: absolute; right: 20px; top: 15px; font-size: 28px; color: #aaa; cursor: pointer; }
+
+        /* FAB - Botão Flutuante */
+        .fab-container { position: fixed; bottom: 20px; right: 20px; z-index: 2000; display: flex; flex-direction: column-reverse; align-items: center; }
+        .fab-main { width: 60px; height: 60px; background-color: #ff4757; border-radius: 50%; border: none; color: white; font-size: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
+        .fab-main.active { transform: rotate(45deg); }
+        .fab-options { display: none; flex-direction: column; gap: 15px; margin-bottom: 15px; animation: fadeInSlide 0.3s ease forwards; }
+        .fab-options.show { display: flex; }
+        .fab-item { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .fab-perfil { width: 50px; height: 50px; border-radius: 50%; border: 3px solid white; box-shadow: 0 4px 8px rgba(0,0,0,0.2); object-fit: cover; }
+        .fab-label { background: white; padding: 5px 10px; border-radius: 8px; font-size: 12px; font-weight: bold; color: #333; }
+
+        @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        @keyframes zoomIn { from { transform: scale(0.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        @keyframes fadeInSlide { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .header { text-align: center; padding: 50px 20px; background: transparent; }
+        h1 { font-family: 'Dancing Script', cursive; font-size: 42px; color: #ff4757; }
+        h3 { font-family: 'Playfair Display', serif; font-style: italic; color: #ff4757; }
+        p, .data { font-family: 'Segoe UI', sans-serif; }
+
+        /* Linha do Tempo */
+        .timeline { position: relative; max-width: 600px; margin: 20px auto; padding: 20px; }
+        .timeline::after { content: ''; position: absolute; width: 2px; background: #C0C0C0; top: 0; bottom: 0; left: 20px; }
+
         .momento-item {
             padding: 10px 40px;
             position: relative;
-            background-color: inherit;
             width: 100%;
             box-sizing: border-box;
             margin-bottom: 30px;
-            opacity: 0; /* Começa invisível para a animação */
+            opacity: 0;
             transform: scale(0.95) translateY(30px);
             transition: all 1s cubic-bezier(0.2, 1, 0.3, 1);
         }
 
-        /* O círculo na linha */
         .momento-item::after {
             content: '';
             position: absolute;
-            width: 16px;
-            height: 16px;
-            left: 12px;
-            background-color: white;
+            width: 16px; height: 16px;
+            left: 12px; background-color: white;
             border: 3px solid #ff4757;
-            top: 15px;
-            border-radius: 50%;
-            z-index: 1;
+            top: 15px; border-radius: 50%; z-index: 1;
         }
 
         .conteudo {
             padding: 20px;
-            background: white;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(5px);
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
-        .conteudo {
-			background: rgba(255, 255, 255, 0.8); /* Branco translúcido para ver o fundo */
-			backdrop-filter: blur(5px); /* Efeito de vidro fosco */
-			border: 1px solid rgba(255, 255, 255, 0.3);
-		}
+        .data { font-weight: bold; color: #ff4757; display: block; margin-bottom: 5px; }
+        .visivel { opacity: 1; transform: scale(1) translateY(0); }
 
-        .data {
-            font-weight: bold;
-            color: #ff4757;
-            display: block;
-            margin-bottom: 5px;
+        .footer-back { text-align: center; padding: 40px; }
+        .btn-voltar { text-decoration: none; color: #888; font-size: 14px; }
+
+        /* Coração Flutuante */
+        .coracao-flutuante {
+            position: absolute; color: #ff4757; font-size: 20px;
+            pointer-events: none; z-index: 10;
+            animation: flutuarESumir 2s ease-out forwards;
         }
+        @keyframes flutuarESumir { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(-50px) scale(1.5); opacity: 0; } }
 
-        /* Classe para ativar a animação */
-        .visivel {
-            opacity: 1;
-            transform: scale(1) translateY(0);
+        /* Música Player */
+        .musica-player {
+            position: fixed; top: 20px; right: 20px; z-index: 5000;
+            width: 45px; height: 45px; background: white;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1); cursor: pointer;
         }
+        #icone-play { font-size: 20px; color: #ff4757; transition: 0.3s; }
+        .barras-som { display: none; align-items: flex-end; gap: 2px; height: 15px; }
+        .barras-som span { width: 3px; background: #ff4757; animation: pulsarSom 0.5s infinite alternate; }
+        @keyframes pulsarSom { from { height: 20%; } to { height: 100%; } }
+        .musica-player.tocando #icone-play { opacity: 0; }
+        .musica-player.tocando .barras-som { display: flex; }
 
-        .footer-back {
-            text-align: center;
-            padding: 40px;
-        }
-
-        .btn-voltar {
-            text-decoration: none;
-            color: #888;
-            font-size: 14px;
-        }
-		.coracao-flutuante {
-			position: absolute;
-			color: #ff4757;
-			font-size: 20px;
-			pointer-events: none;
-			z-index: 10;
-			animation: flutuarESumir 2s ease-out forwards;
-		}
-
-		@keyframes flutuarESumir {
-			0% { transform: translateY(0) scale(1); opacity: 1; }
-			100% { transform: translateY(-50px) scale(1.5); opacity: 0; }
-		}
-		
-		
-		.musica-player {
-			position: fixed;
-			top: 20px;
-			right: 20px;
-			z-index: 5000;
-			width: 45px;
-			height: 45px;
-			background: white;
-			border-radius: 50%;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-			cursor: pointer;
-			transition: 0.3s;
-		}
-
-		#icone-play {
-			font-size: 20px;
-			color: #ff4757;
-			position: absolute;
-			transition: 0.3s;
-		}
-
-		/* Barrinhas de som que pulsam */
-		.barras-som {
-			display: none; /* Escondido quando pausado */
-			align-items: flex-end;
-			gap: 2px;
-			height: 15px;
-		}
-
-		.barras-som span {
-			width: 3px;
-			background: #ff4757;
-			border-radius: 2px;
-			animation: pulsarSom 0.5s ease-in-out infinite alternate;
-		}
-
-		.barras-som span:nth-child(2) { animation-delay: 0.1s; height: 100%; }
-		.barras-som span:nth-child(3) { animation-delay: 0.2s; height: 70%; }
-		.barras-som span:nth-child(4) { animation-delay: 0.3s; height: 40%; }
-
-		@keyframes pulsarSom {
-			from { height: 20%; }
-			to { height: 100%; }
-		}
-
-		/* Quando estiver tocando, esconde o ícone e mostra as barras */
-		.musica-player.tocando #icone-play { opacity: 0; }
-		.musica-player.tocando .barras-som { display: flex; }
-		
-		
+        /* Preloader */
+        #preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #faf5f6; display: flex; justify-content: center; align-items: center; z-index: 9999; transition: 1s; }
+        .coracao-batendo { font-size: 50px; animation: batidaCoracao 1.2s infinite; }
+        @keyframes batidaCoracao { 0%, 30%, 60%, 100% { transform: scale(1); } 15% { transform: scale(1.3); } 45% { transform: scale(1.15); } }
+        .preloader-hidden { opacity: 0; visibility: hidden; }
     </style>
 </head>
 <body>
 
-	<div class="musica-player" id="player-btn" onclick="toggleMusica()">
-		<div class="barras-som" id="ondas">
-			<span></span><span></span><span></span><span></span>
-		</div>
-		<i class='bx bx-music' id="icone-play"></i>
-		<audio id="musica-tema" loop>
-			<source src="sons/nossa-musica.mp3" type="audio/mpeg">
-		</audio>
-	</div>
+    <div id="preloader">
+        <div class="preloader-content">
+            <div class="coracao-batendo">❤️</div>
+            <p class="carregando-texto" style="font-family: 'Dancing Script', cursive; color: #ff4757;">Preparando nossa história...</p>
+        </div>
+    </div>
 
-	<div class="fab-container">
-		<div class="fab-options" id="fabOptions">
-			<div class="fab-item" onclick="abrirModal('modal-ela')">
-				<span class="fab-label">Ariany</span>
-				<img src="./img/namorada/perfil.jpeg" class="fab-perfil">
-			</div>
-			<div class="fab-item" onclick="abrirModal('modal-ele')">
-				<span class="fab-label">kawê</span>
-				<img src="./img/namorada/perfilkawe1.jpeg" class="fab-perfil">
-			</div>
-		</div>
-		<button class="fab-main" id="fabMain">&#10084;
-			<i class='bx bx-user-heart'></i>
-		</button>
-	</div>
+    <div class="musica-player" id="player-btn" onclick="toggleMusica()">
+        <div class="barras-som">
+            <span></span><span></span><span></span><span></span>
+        </div>
+        <i class='bx bx-music' id="icone-play"></i>
+        <audio id="musica-tema" loop>
+            <source src="sons/nossa-musica.mp3" type="audio/mpeg">
+        </audio>
+    </div>
 
-	<div id="modal-ela" class="modal">
-		<div class="modal-content">
-			<span class="close" onclick="fecharModal('modal-ela')">&times;</span>
-			<img src="./img/namorada/perfil.jpeg" class="img-bio-grande">
-			<h2>Ariany</h2>
-			<p class="bio-info"><strong>Aniversário:</strong> 07 de Fevereiro</p>
-			<p class="bio-texto">Uma mulher incrível, decidida e o grande amor da minha vida. Ela é a pessoa que traz paz aos meus dias e sentido a cada momento da nossa história, pode ser um pouco extressada mas ao mesmo tempo a pessoa mais animada, conversa bastante mas isso quando estou longe é o que me faz falta.</p>
-		</div>
-	</div>
+    <div class="fab-container">
+        <div class="fab-options" id="fabOptions">
+            <div class="fab-item" onclick="abrirModal('modal-ela')">
+                <span class="fab-label">Ariany</span>
+                <img src="./img/namorada/perfil.jpeg" class="fab-perfil">
+            </div>
+            <div class="fab-item" onclick="abrirModal('modal-ele')">
+                <span class="fab-label">Kawê</span>
+                <img src="./img/namorada/perfilkawe1.jpeg" class="fab-perfil">
+            </div>
+        </div>
+        <button class="fab-main" id="fabMain"><i class='bx bx-user-heart'></i></button>
+    </div>
 
-	<div id="modal-ele" class="modal">
-		<div class="modal-content">
-			<span class="close" onclick="fecharModal('modal-ele')">&times;</span>
-			<img src="./img/namorada/perfilkawe.jpeg" class="img-bio-grande">
-			<h2>Kawê</h2>
-			<p class="bio-info"><strong>Aniversário:</strong> 04 de Maio</p>
-			<p class="bio-texto">Dedicado em aprender, as melhores maneiras de te amar, mas sempre otimista nunca desistir e sempre tentar meu lema é que viver uma vida sem sonhos é se deixa levar por uma vida vazia.</p>
-		</div>
-	</div>
-	<audio id="coracaoSom" loop>
-    <source src="sons/batida-coracao.m4a" type="audio/mp4">
-	</audio>
+    <div id="modal-ela" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="fecharModal('modal-ela')">&times;</span>
+            <img src="./img/namorada/perfil.jpeg" class="img-bio-grande">
+            <h2>Ariany</h2>
+            <p class="bio-info"><strong>Aniversário:</strong> 07 de Fevereiro</p>
+            <p class="bio-texto">Uma mulher incrível, decidida e o grande amor da minha vida...</p>
+        </div>
+    </div>
+
+    <div id="modal-ele" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="fecharModal('modal-ele')">&times;</span>
+            <img src="./img/namorada/perfilkawe.jpeg" class="img-bio-grande">
+            <h2>Kawê</h2>
+            <p class="bio-info"><strong>Aniversário:</strong> 04 de Maio</p>
+            <p class="bio-texto">Dedicado em aprender as melhores maneiras de te amar...</p>
+        </div>
+    </div>
+
     <div class="header">
         <i class='bx bxs-heart' style="color: #ff4757; font-size: 40px;"></i>
         <h1>Nossa História de Amor</h1>
@@ -324,150 +203,13 @@
             <div class="conteudo">
                 <span class="data">18 de Junho</span>
                 <h3>Primeira vez que eu te vi</h3>
-                <p>Nesse dia eu vi você pela primeira vez, e estando envergonhando não tive coragem de ir conversar com você.</p>
+                <p>Nesse dia eu vi você pela primeira vez...</p>
             </div>
         </div>
-
         <div class="momento-item">
             <div class="conteudo">
                 <span class="data">14 de Novembro</span>
                 <h3>2º Encontro Marcante</h3>
-                <p>Aquele dia em que o frio na barriga, e tomei coragem de te comprimentar e dar um beijo na sua bochecha.</p>
+                <p>Aquele dia em que o frio na barriga tomou conta...</p>
             </div>
         </div>
-		
-		<div class="momento-item">
-            <div class="conteudo">
-                <span class="data">16 de Novembro</span>
-                <h3>Despedida</h3>
-                <p>Nesse dia estava me sentindo tão feliz ao seu lado, mas infelizmente tive que voltar para minha cidade.</p>
-            </div>
-        </div>
-		
-		<div class="momento-item">
-            <div class="conteudo">
-                <span class="data">16 de janeiro</span>
-                <h3>Sua vinda a Campo Grande</h3>
-                <p>Nesse dia vi o quanto eu tinha que te valorizar, pois você fez por mim o que ninguem faria, vir de longe para me ver.</p>
-            </div>
-        </div>
-		
-		<div class="momento-item">
-            <div class="conteudo">
-                <span class="data">20 de janeiro</span>
-                <h3>Sua volta a Miranda</h3>
-                <p>Gostaria tanto que você ficasse,não foi atoa que insisti tanto para que ficasse naquele dia, e foi a melhor coisa que fiz, pois está ao seu lado foi tão bom.</p>
-            </div>
-        </div>
-		
-		<div class="momento-item">
-            <div class="conteudo">
-                <span class="data">16 de Fevereiro</span>
-                <h3>Pedido de namoro</h3>
-                <p>Esse dia até eu senti que demorou, mas eu pedi e foi a melhor coisa que já fiz, por que você foi a melhor coisa já me aconteu. (mas eu gostaria de fazer algo surpresa algo grande)</p>
-            </div>
-        </div>
-		
-		<div class="momento-item">
-            <div class="conteudo">
-                <span class="data">13 de Março</span>
-                <h3>Entrega do Anel</h3>
-                <p>Esse dia eu não sabia como te entregar o anel, novamente gostaria de fazer algo grande, mas mesmo assim foi ótimo, sinto que cada centavo gasto valeu a pena.</p>
-            </div>
-        </div>
-
-    </div>
-
-    <div class="footer-back">
-        <a href="index.html" class="btn-voltar"><i class='bx bx-left-arrow-alt'></i> Voltar ao início</a>
-    </div>
-
-    <script>
-        const audio = document.getElementById('coracaoSom');
-		let iniciouAudio = false;
-
-		const observer = new IntersectionObserver((entries) => {
-			entries.forEach(entry => {
-				if (entry.isIntersecting) {
-					entry.target.classList.add('visivel');
-					
-					// Lógica do Coração Flutuante
-					if (!entry.target.dataset.animado) {
-						const coracao = document.createElement('i');
-						coracao.className = 'bx bxs-heart coracao-flutuante';
-						// Posiciona o coração perto do círculo da linha do tempo
-						coracao.style.left = '12px';
-						coracao.style.top = '15px';
-						entry.target.appendChild(coracao);
-						entry.target.dataset.animado = "true"; // Garante que anime só uma vez
-					}
-
-					// ... (mantenha o código do áudio que já fizemos)
-					if(!iniciouAudio) {
-						audio.play();
-						audio.volume = 0.2;
-						iniciouAudio = true;
-					}
-					const itens = Array.from(document.querySelectorAll('.momento-item'));
-					const index = itens.indexOf(entry.target);
-					let novoVolume = 0.2 + (index * 0.15);
-					audio.volume = Math.min(novoVolume, 1.0);
-				}
-			});
-		}, { threshold: 0.5 });
-
-		// Não esqueça da linha que liga o observador:
-		document.querySelectorAll('.momento-item').forEach(item => observer.observe(item));
-		
-		const fabMain = document.getElementById('fabMain');
-			const fabOptions = document.getElementById('fabOptions');
-
-			// Controla o menu flutuante de rostos
-			fabMain.addEventListener('click', () => {
-				fabMain.classList.toggle('active');
-				fabOptions.classList.toggle('show');
-			});
-
-			// Função para abrir o quadrado de descrição
-			function abrirModal(id) {
-				document.getElementById(id).style.display = "block";
-				// Esconde o menu de fotos ao abrir a descrição
-				fabOptions.classList.remove('show');
-				fabMain.classList.remove('active');
-			}
-
-			// Função para fechar o quadrado
-			function fecharModal(id) {
-				document.getElementById(id).style.display = "none";
-			}
-
-			// Fecha se o usuário clicar em qualquer lugar fora da caixa branca
-			window.addEventListener('click', function(event) {
-				if (event.target.className === 'modal') {
-					event.target.style.display = "none";
-				}
-			});
-			
-			const musica = document.getElementById('musica-tema');
-			const playerBtn = document.getElementById('player-btn');
-
-			function toggleMusica() {
-				if (musica.paused) {
-					musica.play();
-					musica.volume = 0.4; // Volume em 40% para ser agradável
-					playerBtn.classList.add('tocando');
-				} else {
-					musica.pause();
-					playerBtn.classList.remove('tocando');
-				}
-			}
-
-			// Iniciar música na primeira interação da usuária para evitar bloqueio do navegador
-			document.body.addEventListener('click', () => {
-				if (musica.paused && !playerBtn.classList.contains('pausado-manual')) {
-					toggleMusica();
-				}
-			}, { once: true }); // Executa apenas uma vez
-    </script>
-</body>
-</html>

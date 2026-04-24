@@ -226,11 +226,66 @@
 		/* Quando estiver tocando, esconde o ícone e mostra as barras */
 		.musica-player.tocando #icone-play { opacity: 0; }
 		.musica-player.tocando .barras-som { display: flex; }
+		
+		#preloader {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-color: #faf5f6; /* Mesma cor do fundo para suavidade */
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			z-index: 9999; /* Acima de TUDO */
+			transition: opacity 1s ease, visibility 1s;
+		}
+
+		.preloader-content {
+			text-align: center;
+		}
+
+		.coracao-batendo {
+			font-size: 50px;
+			animation: batidaCoracao 1.2s infinite;
+		}
+
+		.carregando-texto {
+			margin-top: 15px;
+			font-family: 'Dancing Script', cursive;
+			font-size: 1.5rem;
+			color: #ff4757;
+			opacity: 0.8;
+		}
+
+		/* Animação de batida realista */
+		@keyframes batidaCoracao {
+			0% { transform: scale(1); }
+			15% { transform: scale(1.3); }
+			30% { transform: scale(1); }
+			45% { transform: scale(1.15); }
+			60% { transform: scale(1); }
+			100% { transform: scale(1); }
+		}
+
+		/* Classe para esconder o preloader */
+		.preloader-hidden {
+			opacity: 0;
+			visibility: hidden;
+		}
 	</style>
 </head>
 
 <body>
-
+	
+	<div id="preloader">
+		<div class="preloader-content">
+			<div class="coracao-batendo">❤️</div>
+			<p class="carregando-texto">Preparando nossos momentos...</p>
+		</div>
+	</div>
+	
+	
 	<div class="musica-player" id="player-btn" onclick="toggleMusica()">
 		<div class="barras-som" id="ondas">
 			<span></span><span></span><span></span><span></span>
@@ -300,6 +355,15 @@
     </div>
 
     <script>
+	
+		window.addEventListener('load', function() {
+			const preloader = document.getElementById('preloader');
+			
+			// Adiciona um pequeno atraso de 1 segundo para ela sentir o coração batendo
+			setTimeout(() => {
+				preloader.classList.add('preloader-hidden');
+			}, 1500);
+		});
         // 1. Lógica do Slider e Corações
         const slider = document.getElementById('slider');
         const pista = document.querySelector('.trava-pista');
