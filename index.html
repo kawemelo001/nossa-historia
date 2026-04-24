@@ -43,7 +43,7 @@
 
         /* MURAL DE MADEIRA */
         .scroll-wrapper {
-            height: 600vh; /* Aumentamos para a rolagem ficar bem lenta e controlada */
+            height: 600vh; 
             position: relative;
             background-color: #3d2b1f;
             background-image: url('img/textura-madeira-quente.jpeg');
@@ -64,21 +64,36 @@
             display: flex;
             padding: 0;
             will-change: transform;
-            
-            /* A mágica acontece aqui: 
-               A animação só vai de 0% a 100% do scroll da seção */
             animation: move-lateral linear both;
             animation-timeline: scroll(root);
-            animation-range: contain 10% contain 90%; /* Dá 10% de folga no início e no fim */
+            animation-range: contain 10% contain 90%; 
         }
 
         .card {
             display: flex;
             flex-direction: column;
             align-items: center;
-            /* Cada card ocupa exatamente a largura da tela */
             min-width: 100vw; 
             position: relative;
+            overflow: hidden; /* Para o efeito de brilho */
+        }
+
+        /* EFEITO DE BRILHO SUTIL NAS FOTOS */
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 100%);
+            transform: skewX(-25deg);
+            transition: 0.8s;
+            z-index: 10;
+        }
+
+        .card:hover::before {
+            left: 150%;
         }
 
         .card img {
@@ -108,7 +123,6 @@
 
         @keyframes move-lateral {
             from { transform: translateX(0); }
-            /* Move exatamente a quantidade de fotos (8 fotos = 7 pulos de 100vw) */
             to { transform: translateX(-700vw); } 
         }
 
@@ -117,13 +131,117 @@
         .trava-pista {
             width: 100%; height: 60px; background: #e0e0e0; border-radius: 30px;
             position: relative; display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
         }
         .trava-botao {
             width: 50px; height: 50px; background: #ff4757; border-radius: 50%;
             position: absolute; left: 5px; display: flex; align-items: center; justify-content: center;
             color: white; font-size: 24px;
+            animation: pulse-sutil 2s infinite; /* Pulsação sutil para atrair o dedo */
         }
+
+        @keyframes pulse-sutil {
+            0% { box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(255, 71, 87, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 71, 87, 0); }
+        }
+
         .liberado { background: #4cd137 !important; }
+
+        /* ESTILO DOS CONFETES DE CORAÇÃO */
+        .coracao-confete {
+            position: fixed;
+            z-index: 9999;
+            pointer-events: none;
+            font-size: 20px;
+            animation: subirESumir 2.5s ease-out forwards;
+        }
+
+        @keyframes subirESumir {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+		
+		
+		
+		.contador-caixa {
+			text-align: center;
+			padding: 20px;
+			background: rgba(255, 255, 255, 0.5);
+			border-radius: 15px;
+			max-width: 320px;
+			box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+			margin: 20px auto;
+			width: 100%;
+			
+			font-size: 0.7rem;
+			color: #888;
+			text-transform: uppercase;
+			letter-spacing: 1px;
+		}
+
+		#contador {
+			font-weight: bold;
+			color: #ff4757;
+			font-size: 1.2rem;
+		}
+
+		.btn-surpresa {
+			background: #ff4757;
+			color: white;
+			border: none;
+			padding: 12px 25px;
+			border-radius: 25px;
+			cursor: pointer;
+			font-family: 'Segoe UI', sans-serif;
+			margin-top: 15px;
+			transition: 0.3s;
+		}
+
+		.btn-surpresa:active { transform: scale(0.9); }
+
+		#frase-surpresa {
+			margin-top: 10px;
+			font-style: italic;
+			color: #b0413e;
+			min-height: 20px;
+		}
+		
+		
+		
+		
+		.saudade-container {
+			text-align: center;
+			margin: 20px auto;
+			padding: 15px;
+			background: rgba(255, 255, 255, 0.5);
+			border-radius: 15px;
+			max-width: 320px;
+			box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+		}
+
+		.saudade-label {
+			font-size: 0.8rem;
+			color: #888;
+			text-transform: uppercase;
+			letter-spacing: 1px;
+		}
+
+		#contador-saudade {
+			font-family: 'Segoe UI', sans-serif;
+			font-size: 1.4rem;
+			font-weight: bold;
+			color: #ff4757;
+			margin: 10px 0;
+		}
+
+		.saudade-frase {
+			font-family: 'Dancing Script', cursive;
+			font-size: 1.2rem;
+			color: #b0413e;
+			min-height: 1.5rem;
+		}
+		
     </style>
 </head>
 
@@ -139,10 +257,7 @@
     <div class="scroll-wrapper">
         <div class="scroll-sticky">
             <div class="scroll-content">
-                <div class="card">
-                    <img src="./img/namorada/n1.jpg" alt="1">
-                    <div class="legenda">O início de tudo...</div>
-                </div>
+                <div class="card"><img src="./img/namorada/n1.jpg" alt="1"><div class="legenda">O início de tudo...</div></div>
                 <div class="card"><img src="./img/namorada/n2.jpg" alt="2"><div class="legenda">Estava apaixonado...</div></div>
                 <div class="card"><img src="./img/namorada/n3.jpg" alt="3"><div class="legenda">Nossa 1ª viagem juntos</div></div>
                 <div class="card"><img src="./img/namorada/n4.jpeg" alt="4"><div class="legenda">Eu te amo muito</div></div>
@@ -153,8 +268,8 @@
             </div>
         </div>
     </div>
-
-    <div class="container">
+	
+	<div class="container">
         <p>Começamos juntos, vamos juntos até o fim.</p>
         <div class="trava-container">
             <div class="trava-pista">
@@ -163,6 +278,23 @@
             </div>
         </div>
     </div>
+	
+	<div class="container">
+		<p id="frase-surpresa"></p>
+		<button class="btn-surpresa" onclick="mostrarFrase()">
+			<i class='bx bxs-magic-wand'></i> O que eu amo em você?
+		</button>
+		<div class="contador-caixa">
+			<h3>Estamos juntos há:</h3>
+			<div id="contador">Carregando tempo...</div>
+		</div>
+	</div>
+	
+    <div class="saudade-container">
+		<span class="saudade-label">Nível de saudade acumulado:</span>
+		<div id="contador-saudade">Carregando...</div>
+		<p class="saudade-frase" id="frase-dinamica">Pensando em você...</p>
+	</div>
 
     <script>
         const slider = document.getElementById('slider');
@@ -182,9 +314,18 @@
             if (x < 5) x = 5;
             if (x > limit) x = limit;
             slider.style.left = x + 'px';
-            if (x >= limit) {
+
+            if (x >= limit && !slider.classList.contains('liberado')) {
                 slider.classList.add('liberado');
-                setTimeout(() => { window.location.href = "historia.html"; }, 500);
+                
+                // DISPARA A CHUVA DE CORAÇÕES AO DESBLOQUEAR
+                for(let i=0; i<20; i++) {
+                    setTimeout(criarCoracao, i * 50);
+                }
+
+                setTimeout(() => { 
+                    window.location.href = "historia.html"; 
+                }, 1200); 
             }
         };
 
@@ -193,12 +334,98 @@
             isDragging = false;
         };
 
+        // FUNÇÃO PARA CRIAR O ELEMENTO DE CORAÇÃO
+        function criarCoracao() {
+            const coracao = document.createElement('div');
+            coracao.innerHTML = '❤️';
+            coracao.className = 'coracao-confete';
+            coracao.style.left = Math.random() * 100 + 'vw';
+            coracao.style.bottom = '-5vh';
+            coracao.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            document.body.appendChild(coracao);
+            
+            // Remove do HTML após a animação acabar
+            setTimeout(() => { coracao.remove(); }, 3000);
+        }
+
         slider.addEventListener('mousedown', start);
         slider.addEventListener('touchstart', start);
         window.addEventListener('mousemove', move);
         window.addEventListener('touchmove', move);
         window.addEventListener('mouseup', end);
         window.addEventListener('touchend', end);
+		
+		
+		// 1. Lógica do Contador
+		const dataInicio = new Date("2026-02-16T00:00:00"); // COLOQUE A DATA CERTA AQUI
+
+		function atualizarContador() {
+			const agora = new Date();
+			const diff = agora - dataInicio;
+
+			const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
+			const horas = Math.floor((diff / (1000 * 60 * 60)) % 24);
+			const minutos = Math.floor((diff / 1000 / 60) % 60);
+			const segundos = Math.floor((diff / 1000) % 60);
+
+			document.getElementById('contador').innerHTML = 
+				`${dias} dias, ${horas}h ${minutos}m ${segundos}s`;
+		}
+		setInterval(atualizarContador, 1000);
+
+		// 2. Lógica das Frases Aleatórias
+		const frases = [
+			"O brilho do seu olhar.",
+			"A forma como você me apoia.",
+			"O seu sorriso contagiante.",
+			"Sua determinação em tudo o que faz.",
+			"A paz que você me transmite.",
+			"O seu carinho único."
+		];
+
+		function mostrarFrase() {
+			const p = document.getElementById('frase-surpresa');
+			const fraseAleatoria = frases[Math.floor(Math.random() * frases.length)];
+			p.style.opacity = 0;
+			setTimeout(() => {
+				p.innerText = fraseAleatoria;
+				p.style.opacity = 1;
+			}, 200);
+		}
+		
+		
+		
+		// Defina aqui a data que você quer contar (Ex: Início do namoro ou última vez que se viram)
+		const dataReferencia = new Date("2026-04-01T00:14:00"); 
+
+		function atualizarSaudade() {
+			const agora = new Date();
+			const diff = agora - dataReferencia;
+
+			const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
+			const horas = Math.floor((diff / (1000 * 60 * 60)) % 24);
+			const minutos = Math.floor((diff / 1000 / 60) % 60);
+			const segundos = Math.floor((diff / 1000) % 60);
+
+			document.getElementById('contador-saudade').innerHTML = 
+				`${dias}d ${horas}h ${minutos}m ${segundos}s`;
+			
+			// Mudar a frase dependendo dos segundos (só para dar um charme)
+			const frases = [
+				"O coração bate mais forte...",
+				"Contando os segundos para te ver",
+				"Você é meu pensamento favorito",
+				"Cada segundo vale a pena com você",
+				"Saudade que não cabe no peito"
+			];
+			
+			// Muda a frase a cada 5 segundos
+			const indexFrase = Math.floor(segundos / 12); 
+			document.getElementById('frase-dinamica').innerText = frases[indexFrase];
+		}
+
+		setInterval(atualizarSaudade, 1000);
+		atualizarSaudade(); // Chama uma vez logo de cara
     </script>
 </body>
 </html>
