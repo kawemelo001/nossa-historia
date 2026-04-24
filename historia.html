@@ -16,6 +16,74 @@
 			color: #4a4a4a;
         }
 		
+		/* Estilo dos Modais (As caixas de descrição) */
+		.modal {
+			display: none;
+			position: fixed;
+			z-index: 3000;
+			left: 0; top: 0; width: 100%; height: 100%;
+			background-color: rgba(0,0,0,0.7);
+			backdrop-filter: blur(8px); /* Efeito de vidro atrás */
+		}
+
+		.modal-content {
+			background-color: #fff;
+			margin: 15% auto;
+			padding: 30px;
+			border-radius: 20px;
+			width: 85%;
+			max-width: 400px;
+			text-align: center;
+			position: relative;
+			box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+			animation: zoomIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+		}
+
+		.img-bio-grande {
+			width: 120px;
+			height: 120px;
+			border-radius: 50%;
+			object-fit: cover;
+			margin-bottom: 15px;
+			border: 4px solid #ff4757;
+		}
+
+		.bio-info {
+			color: #ff4757;
+			font-weight: bold;
+			margin-bottom: 10px;
+		}
+
+		.bio-texto {
+			font-size: 0.95rem;
+			line-height: 1.6;
+			color: #555;
+		}
+
+		.close {
+			position: absolute;
+			right: 20px;
+			top: 15px;
+			font-size: 28px;
+			font-weight: bold;
+			color: #aaa;
+			cursor: pointer;
+		}
+
+		/* Reutilizando o Estilo do FAB do passo anterior */
+		.fab-container { position: fixed; bottom: 20px; right: 20px; z-index: 2000; display: flex; flex-direction: column-reverse; align-items: center; }
+		.fab-main { width: 60px; height: 60px; background-color: #ff4757; border-radius: 50%; border: none; color: white; font-size: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
+		.fab-main.active { transform: rotate(45deg); }
+		.fab-options { display: none; flex-direction: column; gap: 15px; margin-bottom: 15px; animation: fadeInSlide 0.3s ease forwards; }
+		.fab-options.show { display: flex; }
+		.fab-item { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+		.fab-perfil { width: 50px; height: 50px; border-radius: 50%; border: 3px solid white; box-shadow: 0 4px 8px rgba(0,0,0,0.2); object-fit: cover; }
+		.fab-label { background: white; padding: 5px 10px; border-radius: 8px; font-size: 12px; font-weight: bold; color: #333; }
+
+		@keyframes zoomIn { from { transform: scale(0.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+		@keyframes fadeInSlide { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+		
 		@keyframes gradientBG {
 			0% { background-position: 0% 50%; }
 			50% { background-position: 100% 50%; }
@@ -141,6 +209,41 @@
     </style>
 </head>
 <body>
+	<div class="fab-container">
+		<div class="fab-options" id="fabOptions">
+			<div class="fab-item" onclick="abrirModal('modal-ela')">
+				<span class="fab-label">Ariany</span>
+				<img src="./img/namorada/perfil.jpeg" class="fab-perfil">
+			</div>
+			<div class="fab-item" onclick="abrirModal('modal-ele')">
+				<span class="fab-label">kawê</span>
+				<img src="./img/namorada/perfilkawe1.jpeg" class="fab-perfil">
+			</div>
+		</div>
+		<button class="fab-main" id="fabMain">&#10084;
+			<i class='bx bx-user-heart'></i>
+		</button>
+	</div>
+
+	<div id="modal-ela" class="modal">
+		<div class="modal-content">
+			<span class="close" onclick="fecharModal('modal-ela')">&times;</span>
+			<img src="./img/namorada/perfil.jpeg" class="img-bio-grande">
+			<h2>Ariany</h2>
+			<p class="bio-info"><strong>Aniversário:</strong> 07 de Fevereiro</p>
+			<p class="bio-texto">Uma mulher incrível, decidida e o grande amor da minha vida. Ela é a pessoa que traz paz aos meus dias e sentido a cada momento da nossa história, pode ser um pouco extressada mas ao mesmo tempo a pessoa mais animada, conversa bastante mas isso quando estou longe é o que me faz falta.</p>
+		</div>
+	</div>
+
+	<div id="modal-ele" class="modal">
+		<div class="modal-content">
+			<span class="close" onclick="fecharModal('modal-ele')">&times;</span>
+			<img src="./img/namorada/perfilkawe.jpeg" class="img-bio-grande">
+			<h2>Kawê</h2>
+			<p class="bio-info"><strong>Aniversário:</strong> 04 de Maio</p>
+			<p class="bio-texto">Dedicado em aprender, as melhores maneiras de te amar, mas sempre otimista nunca desistir e sempre tentar meu lema é que viver uma vida sem sonhos é se deixa levar por uma vida vazia.</p>
+		</div>
+	</div>
 	<audio id="coracaoSom" loop>
     <source src="sons/batida-coracao.m4a" type="audio/mp4">
 	</audio>
@@ -249,6 +352,35 @@
 
 		// Não esqueça da linha que liga o observador:
 		document.querySelectorAll('.momento-item').forEach(item => observer.observe(item));
+		
+		const fabMain = document.getElementById('fabMain');
+			const fabOptions = document.getElementById('fabOptions');
+
+			// Controla o menu flutuante de rostos
+			fabMain.addEventListener('click', () => {
+				fabMain.classList.toggle('active');
+				fabOptions.classList.toggle('show');
+			});
+
+			// Função para abrir o quadrado de descrição
+			function abrirModal(id) {
+				document.getElementById(id).style.display = "block";
+				// Esconde o menu de fotos ao abrir a descrição
+				fabOptions.classList.remove('show');
+				fabMain.classList.remove('active');
+			}
+
+			// Função para fechar o quadrado
+			function fecharModal(id) {
+				document.getElementById(id).style.display = "none";
+			}
+
+			// Fecha se o usuário clicar em qualquer lugar fora da caixa branca
+			window.addEventListener('click', function(event) {
+				if (event.target.className === 'modal') {
+					event.target.style.display = "none";
+				}
+			});
     </script>
 </body>
 </html>
