@@ -292,7 +292,7 @@
 		</div>
 		<i class='bx bx-music' id="icone-play"></i>
 		<audio id="musica-tema" loop>
-			<source src="sons/nossa-musica.mp3" type="audio/mpeg">
+			<source src="sons/nossa-musica1.m4a" type="audio/mp4">
 		</audio>
 	</div>
 	
@@ -447,12 +447,33 @@
 
 		function toggleMusica() {
 			if (musica.paused) {
+				musica.volume = 0; // Começa no silêncio
 				musica.play();
-				musica.volume = 0.4; // Volume em 40% para ser agradável
 				playerBtn.classList.add('tocando');
+				
+			// Fade-in suave em ~2 segundos
+			const fadeIn = setInterval(() => {
+				if (musica.volume < 0.38) {
+					musica.volume = Math.min(musica.volume + 0.02, 0.4);
+				} else {
+					musica.volume = 0.4;
+					clearInterval(fadeIn);
+				}
+			}, 100); // A cada 100ms sobe um pouco (~20 passos = 2 segundos)
+			
+		
 			} else {
-				musica.pause();
-				playerBtn.classList.remove('tocando');
+				// Fade-out suave antes de pausar
+				const fadeOut = setInterval(() => {
+					if (musica.volume > 0.02) {
+						musica.volume = Math.max(musica.volume - 0.02, 0);
+					} else {
+						musica.pause();
+						musica.volume = 0.4; // Restaura para próxima vez
+						playerBtn.classList.remove('tocando');
+						clearInterval(fadeOut);
+					}
+				}, 100);
 			}
 		}
 
